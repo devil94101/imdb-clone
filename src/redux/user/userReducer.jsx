@@ -1,6 +1,5 @@
 const ini = {
-  user: null,
-  token: null
+  user: null
 };
 export const userReducer = (state = ini, action) => {
   switch (action.type) {

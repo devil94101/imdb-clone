@@ -1,7 +1,9 @@
-import React, { useReducer } from "react";
+import React, { useReducer,useState,useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { setUser } from "../../redux/user/userAction";
+import {bake_cookie,read_cookie} from 'sfcookies'
+import axios from 'axios'
 import "./style.css";
 
 const iniState = {
@@ -18,20 +20,49 @@ function reducer(state, { field, value }) {
 }
 function Signup(props) {
   const [state, setState] = useReducer(reducer, iniState);
+  const [login,setlogin]=useState(false)
   const handleInput = (e) => {
     setState({ field: e.target.name, value: e.target.value });
   };
   console.log(props);
   const submit = (e) => {
-    props.setUser({
-      name: "deepak",
-      token: "agikdbjsh4865"
-    });
     e.preventDefault();
+    if(state.password===state.password2){
+      axios.post('http://localhost:5000/api/register',{
+        name:state.name,
+      email:state.email,
+      password:state.password
+      }).then(res=>{
+        if(res.data.err){
+          alert(res.data.msg)
+        }
+        else{
+          bake_cookie('token',res.data.token)
+        }
+      }).catch(err=>{
+
+      })
+    }
   };
+  useEffect(()=>{
+    if(login===false){
+console.log("chala")
+      axios.get('http://localhost:5000/api/auth',{
+        headers:{
+          'x-auth-token':read_cookie('token')
+        }
+      }).then(res=>{
+          if(!res.data.err){
+            setlogin(true)
+          }
+      }).catch(err=>{
+console.log(err.message)
+      })
+    }
+  },[login])
   return (
     <div>
-      {props.token ? <Redirect to="/" /> : null}
+      {login ? <Redirect to="/" /> : null}
       <h1>SignUp Page</h1>
       <main>
         <form onSubmit={submit}>

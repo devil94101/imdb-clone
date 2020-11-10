@@ -2,19 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { setUser } from "../../redux/user/userAction";
+import {read_cookie,delete_cookie} from 'sfcookies'
 function SetUser(props) {
-  console.log(props);
+  console.log(read_cookie("token").length);
+  const logout=()=>{
+    delete_cookie('token');
+}
+
   return (
 
     <div>
-      {!props.token ? <Redirect to="/login" /> : null}
+      {read_cookie('token').length>0? <Redirect to="/login" /> : null}
       Home Screen
       <button
-        onClick={() =>
-          props.setUser({
-            name: "",
-            token: null
-          })
+        onClick={logout
         }
       >
         Logout
