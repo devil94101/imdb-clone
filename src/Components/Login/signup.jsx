@@ -1,7 +1,6 @@
-import React, { useReducer,useState,useEffect } from "react";
+import React, { useReducer,useState } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { setUser } from "../../redux/user/userAction";
+
 import {bake_cookie,read_cookie} from 'sfcookies'
 import axios from 'axios'
 import "./style.css";
@@ -20,11 +19,11 @@ function reducer(state, { field, value }) {
 }
 function Signup(props) {
   const [state, setState] = useReducer(reducer, iniState);
-  const [login,setlogin]=useState(false)
+  const [login,setlogin]=useState(read_cookie('token').length>0?true:false)
   const handleInput = (e) => {
     setState({ field: e.target.name, value: e.target.value });
   };
-  console.log(props);
+ 
   const submit = (e) => {
     e.preventDefault();
     if(state.password===state.password2){
@@ -38,28 +37,13 @@ function Signup(props) {
         }
         else{
           bake_cookie('token',res.data.token)
+          setlogin(true)
         }
       }).catch(err=>{
-
+        console.log(err.message)
       })
     }
   };
-  useEffect(()=>{
-    if(login===false){
-console.log("chala")
-      axios.get('http://localhost:5000/api/auth',{
-        headers:{
-          'x-auth-token':read_cookie('token')
-        }
-      }).then(res=>{
-          if(!res.data.err){
-            setlogin(true)
-          }
-      }).catch(err=>{
-console.log(err.message)
-      })
-    }
-  },[login])
   return (
     <div>
       {login ? <Redirect to="/" /> : null}
@@ -131,14 +115,4 @@ console.log(err.message)
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.user.token
-  };
-};
-const mapDispatch = (dispatch) => {
-  return {
-    setUser: (user) => dispatch(setUser(user))
-  };
-};
-export default connect(mapStateToProps, mapDispatch)(Signup);
+export default Signup;
