@@ -12,7 +12,6 @@ function MovieList(props) {
     delete_cookie('token');
     setlogin(false)
 }
-
 useEffect(()=>{
   if(login===true){
     axios.get('http://localhost:5000/api/auth',{
@@ -33,11 +32,7 @@ useEffect(()=>{
 console.log(props)
  const submit=(e)=>{
     e.preventDefault()
-  axios.get('http://localhost:5000/api/search/'+search,{
-    headers:{
-      'x-auth-token':read_cookie('token')
-    }
-  }).then(res=>{
+  axios.get('http://localhost:5000/api/search/'+search).then(res=>{
     console.log(res.data)
     props.setSearch({
       search,
@@ -56,21 +51,10 @@ console.log(props)
             <div className="container">
                   
                     <div className="navbar-header">
-                        
-                    
                         <a href="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </a>
+                        
                     </div>
-                <div className="collapse navbar-collapse" id="bs-nav-bar1">
-                    
-                    <ul className="nav navbar-nav">
-                       <li><a href="aboutme.html" title=""> About</a> </li>
-                        <li><a href="projects.html" title=""> Projects</a> </li>
-                      
-                    </ul>
-                    <ul className="nav navbar-nav navbar-right">
-                      <li><a href="contactme.html" title=""><span className="glyphicon glyphicon-envelope"></span> Contact</a></li>
-                    </ul>
-                </div>
+                    <div><button className="btn btn-danger">Logout</button></div>
             </div>
             </nav>
      </header>
@@ -91,7 +75,7 @@ console.log(props)
       {props.data.map((ele,i)=>{
            return(<div key={i} className="col-lg-4 col-sm-6">
            <div className="thumbnail img-responsive">
-               <a href={"/search/:"+ele.imdbID}> <img src={ele.Poster} className="searched_images" alt={ele.Title}/>
+               <a href={"/search/"+ele.imdbID}> <img src={ele.Poster} className="searched_images" alt={ele.Title}/>
                <div className="caption" align="center">
                    <p>{ele.Title}</p>
                </div>
