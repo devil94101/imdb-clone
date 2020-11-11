@@ -30,6 +30,7 @@ function Login(props) {
           alert(res.data.msg);
         }
         else{
+          console.log("login success",res.data)
           bake_cookie('token',res.data.token)
           setlogin(true)
         }
@@ -37,6 +38,7 @@ function Login(props) {
         console.log(err.message)
       })
   };
+  console.log(read_cookie("token"))
   return (
     <div>
       {login ? <Redirect to="/" /> : null}

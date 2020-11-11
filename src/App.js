@@ -2,10 +2,10 @@ import React from "react";
 
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
-import SetUser from "./Components/User/SetUser";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login/login";
 import SignUp from "./Components/Login/signup";
+import MovieList from './Components/MovieList/movieList'
 import "./App.css";
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/" component={SetUser} />
+            <Route exact path="/" component={MovieList} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
           </Switch>
