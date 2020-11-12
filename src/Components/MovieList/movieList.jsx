@@ -32,7 +32,7 @@ useEffect(()=>{
 console.log(props)
  const submit=(e)=>{
     e.preventDefault()
-  axios.get('http://localhost:5000/api/search/'+search).then(res=>{
+  axios.get('http://localhost:5000/movie/search/'+search).then(res=>{
     console.log(res.data)
     props.setSearch({
       search,

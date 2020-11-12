@@ -15,6 +15,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Switch>
+            
             <Route exact path="/" component={MovieList} />
             <Route exact path="/edit/:id" component={EditMovie}/>
             <Route path="/login" component={Login} />

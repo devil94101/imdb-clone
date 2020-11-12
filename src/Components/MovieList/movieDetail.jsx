@@ -32,8 +32,8 @@ useEffect(()=>{
 console.log(props)
  useEffect(()=>{
    if(data.length===0){
-    axios.get('http://localhost:5000/api/detail/'+props.match.params.id).then(res=>{
-        // console.log(res.data)
+    axios.get('http://localhost:5000/movie/detail/'+props.match.params.id).then(res=>{
+        console.log(res.data)
         setData(res.data)
     }).catch(err=>{
       console.log(err.message)
@@ -67,10 +67,7 @@ console.log(props)
           <div className="col-lg-8 col-sm-6">
                 <div className="movie_data">
                     <h3> {data["Title"]}</h3>
-                   <p> <strong> Duration: </strong>{data["Runtime"]} </p>
-                   <p> <strong> Genre: </strong>{data["Genre"]} </p>
-                   <p> <strong> IMDB Rating: </strong>{data["imdbRating"]}</p>
-                   <p> <strong> IMDB Votes: </strong>{data["imdbVotes"]}</p>
+                   {/* <p> <strong> IMDB Votes: </strong>{data["imdbVotes"]}</p> */}
                    <p><strong> Cast: </strong> {data["Actors"]}</p>
                    <p><strong> Plot: </strong> {data["Plot"]}</p>
                 </div>
