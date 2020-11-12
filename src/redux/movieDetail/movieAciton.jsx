@@ -1,6 +1,6 @@
 export const setMovie = (res) => {
   return {
-    type: "setSearch",
+    type: "setDetail",
     payload: res
   };
 };

@@ -2,10 +2,8 @@ import React,{useState,useEffect} from "react";
 import { Redirect,Link } from "react-router-dom";
 import {read_cookie,delete_cookie,bake_cookie} from 'sfcookies'
 import axios from 'axios'
-import { connect } from "react-redux";
-import { setMovie } from "../../redux/movieDetail/movieAciton";
-function MovieDetail(props) {
 
+function MovieDetail(props) {
 
   const [login,setlogin]=useState(read_cookie('token').length>0?true:false)
   const [data,setData]=useState([])
@@ -35,17 +33,14 @@ console.log(props)
  useEffect(()=>{
    if(data.length===0){
     axios.get('http://localhost:5000/api/detail/'+props.match.params.id).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         setData(res.data)
-        props.setMovie({
-          id:props.match.params.id,
-          data:res.data
-        })
     }).catch(err=>{
       console.log(err.message)
     })
   }
  },[data])
+ console.log(props)
   return (
     <div>
       {/* {!login? <Redirect to="/login" /> : null} */}
@@ -87,15 +82,5 @@ console.log(props)
     </div>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    id:state.movie.id,
-    data:state.movie.data
-  };
-};
-const mapDispatch = (dispatch) => {
-  return {
-    setMovie:(data)=>{dispatch(setMovie(data))}
-  };
-};
-export default connect(mapStateToProps, mapDispatch)(MovieDetail)
+
+export default MovieDetail;

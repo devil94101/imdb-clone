@@ -1,15 +1,15 @@
 const ini = {
   id:"",
-  data:[],
+  detail:[],
   actors:[]
 };
 export const movieReducer = (state = ini, action) => {
   switch (action.type) {
-    case "setSearch":
+    case "setDetail":
       return {
         ...state,
        id:action.payload.id,
-       data:action.payload.data
+       detail:action.payload.data
       };
     case "setActor":
       return{

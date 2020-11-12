@@ -7,6 +7,7 @@ import DatePicker from 'react-date-picker'
 
 function EditMovie(props) {
  
+  console.log(props)
   return (
         <div className="col-md-4">
             <div className="form-group">

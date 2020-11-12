@@ -31,7 +31,7 @@ useEffect(()=>{
     })
   }
 },[login])
-console.log(actors)
+
 
   return (
     <div>

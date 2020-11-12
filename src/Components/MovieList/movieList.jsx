@@ -7,7 +7,7 @@ import axios from 'axios'
 function MovieList(props) {
 
   const [login,setlogin]=useState(read_cookie('token').length>0?true:false)
-  const [search,setSearch]=useState("")
+  const [search,setSearch]=useState(props.search)
   const logout=()=>{
     delete_cookie('token');
     setlogin(false)
@@ -41,7 +41,6 @@ console.log(props)
   }).catch(err=>{
     console.log(err.message)
   })
-   
   }
   return (
     <div>
@@ -90,6 +89,7 @@ console.log(props)
   );
 }
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
     search:state.list.search,
     data:state.list.data
