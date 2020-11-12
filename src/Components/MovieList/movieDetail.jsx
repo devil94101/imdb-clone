@@ -2,7 +2,8 @@ import React,{useState,useEffect} from "react";
 import { Redirect,Link } from "react-router-dom";
 import {read_cookie,delete_cookie,bake_cookie} from 'sfcookies'
 import axios from 'axios'
-
+import { connect } from "react-redux";
+import {setMovie} from '../../redux/movieDetail/movieAciton'
 function MovieDetail(props) {
 
   const [login,setlogin]=useState(read_cookie('token').length>0?true:false)
@@ -35,6 +36,10 @@ console.log(props)
     axios.get('http://localhost:5000/movie/detail/'+props.match.params.id).then(res=>{
         console.log(res.data)
         setData(res.data)
+        props.setMovie({
+          id:props.match.params.id,
+          data:res.data
+        })
     }).catch(err=>{
       console.log(err.message)
     })
@@ -67,9 +72,11 @@ console.log(props)
           <div className="col-lg-8 col-sm-6">
                 <div className="movie_data">
                     <h3> {data["Title"]}</h3>
-                   {/* <p> <strong> IMDB Votes: </strong>{data["imdbVotes"]}</p> */}
                    <p><strong> Cast: </strong> {data["Actors"]}</p>
+                   <p><strong> Director: </strong> {data["Director"]}</p>
                    <p><strong> Plot: </strong> {data["Plot"]}</p>
+                   <p><strong> Release: </strong> {data["Released"]}</p>
+
                 </div>
                
             </div>
@@ -79,5 +86,16 @@ console.log(props)
     </div>
   );
 }
-
-export default MovieDetail;
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    id:state.movie.id,
+    data:state.movie.detail
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    setMovie:(data)=>{dispatch(setMovie(data))}
+  };
+};
+export default connect(mapStateToProps, mapDispatch) (MovieDetail)

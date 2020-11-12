@@ -18,12 +18,7 @@ const top100Films = [
   { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
   { title: 'The Good, the Bad and the Ugly', year: 1966 }
 ]
-const iniState = {
-  name:"",
-  date:new Date(),
-  plot:"",
-  poster:""
-};
+
 function reducer(state, { field, value }) {
   return {
     ...state,
@@ -31,9 +26,15 @@ function reducer(state, { field, value }) {
   };
 }
 function Movie(props) {
+  const iniState = {
+    name:props.data.Title,
+    date:props.data.Released,
+    plot:props.data.Plot,
+    poster:props.data.Poster
+  };
   const [actors,setActors]=useState([])
   const [state,setState]=useReducer(reducer,iniState)
-  const [director,setDirector]=useState('')
+  const [director,setDirector]=useState(props.data.Director)
   const submit=()=>{
     let formData=new FormData()
     formData.append('name',state.name)
@@ -42,9 +43,6 @@ function Movie(props) {
     formData.append('actors',actors)
     formData.append('release',state.date)
     formData.append('plot',state.plot)
-    const options={
-
-    }
     axios.post('http://localhost:5000/movie/addMovie',formData).then(res=>{
       console.log(res.data)
     }).catch(err=>{
@@ -54,7 +52,7 @@ function Movie(props) {
   const handleInput = (e) => {
     setState({ field: e.target.name, value: e.target.value });
   };
-  // console.log(state.plot)
+  console.log(props)
   return (
       <div className="col-md-4">
         <div className="form-group">
@@ -84,6 +82,7 @@ function Movie(props) {
       <div className="form-group">
       <label >Director</label>
       <Autocomplete
+      defaultValue={director}
        onInputChange={(e,v)=>{
          setDirector(v)
        }}
@@ -92,12 +91,8 @@ function Movie(props) {
      />
     </div>
     <div className="form-group">
-      <label htmlFor="">Poster</label>
-      <input type="text" className="form-control" name="poster" onChange={setState} value={state.poster} placeholder="image url"/>
-    </div>
-    <div className="form-group">
       <label htmlFor="">Plot</label>
-      <textarea name="plot" cols="50" rows="10" value={state.plot} onChange={handleInput}></textarea>
+      <textarea className="form-control" name="plot" cols="50" rows="10" value={state.plot} onChange={handleInput}></textarea>
        </div>
 
     <div className="form-group">
@@ -107,7 +102,16 @@ function Movie(props) {
         value={state.date}
     /></div>
     </div>
-   
+    <div className="form-group">
+      <label htmlFor="">Poster</label>
+      <div >
+      <img src={state.poster} alt={state.name} height="100" width="100"/>
+      </div>
+      <div >
+       <input className="form-control" type="text" name='poster' value={state.poster} onChange={setState} placeholder="image url"/>
+      </div>
+      
+    </div>
     <button onClick={submit} className="btn btn-primary">Submit</button>
         </div>
         
@@ -116,7 +120,7 @@ function Movie(props) {
 const mapStateToProps = (state) => {
   return {
     id:state.movie.id,
-    data:state.movie.data
+    data:state.movie.detail
   };
 };
 const mapDispatch = (dispatch) => {
