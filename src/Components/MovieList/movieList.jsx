@@ -12,6 +12,7 @@ function MovieList(props) {
     delete_cookie('token');
     setlogin(false)
 }
+
 useEffect(()=>{
   if(login===true){
     axios.get('http://localhost:5000/api/auth',{
