@@ -21,7 +21,8 @@ const top100Films = [
 const iniState = {
   name:"",
   date:new Date(),
-  plot:""
+  plot:"",
+  poster:""
 };
 function reducer(state, { field, value }) {
   return {
@@ -31,14 +32,13 @@ function reducer(state, { field, value }) {
 }
 function Movie(props) {
   const [actors,setActors]=useState([])
-  const [file,setFile]=useState(null)
   const [state,setState]=useReducer(reducer,iniState)
   const [director,setDirector]=useState('')
   const submit=()=>{
     let formData=new FormData()
     formData.append('name',state.name)
     formData.append('director',director)
-    formData.append('poster',file)
+    formData.append('poster',state.poster)
     formData.append('actors',actors)
     formData.append('release',state.date)
     formData.append('plot',state.plot)
@@ -93,6 +93,10 @@ function Movie(props) {
     </div>
     <div className="form-group">
       <label htmlFor="">Poster</label>
+      <input type="text" className="form-control" name="poster" onChange={setState} value={state.poster} placeholder="image url"/>
+    </div>
+    <div className="form-group">
+      <label htmlFor="">Plot</label>
       <textarea name="plot" cols="50" rows="10" value={state.plot} onChange={handleInput}></textarea>
        </div>
 
@@ -103,10 +107,7 @@ function Movie(props) {
         value={state.date}
     /></div>
     </div>
-    <div className="form-group">
-      <label htmlFor="">Poster</label>
-      <input type="file" onChange={(e)=>setFile(e.target.files[0])}/>
-    </div>
+   
     <button onClick={submit} className="btn btn-primary">Submit</button>
         </div>
         

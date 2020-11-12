@@ -14,6 +14,7 @@ function EditMovie(props) {
     setlogin(false)
   }
 
+
 useEffect(()=>{
   if(login===true){
     axios.get('http://localhost:5000/api/auth',{
