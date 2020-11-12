@@ -7,6 +7,7 @@ import Login from "./Components/Login/login";
 import SignUp from "./Components/Login/signup";
 import MovieList from './Components/MovieList/movieList'
 import MovieDetail from './Components/MovieList/movieDetail'
+import EditMovie from './Components/EditDetails/EditMovie'
 import "./App.css";
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <div className="App">
           <Switch>
             <Route exact path="/" component={MovieList} />
+            <Route exact path="/edit/:id" component={EditMovie}/>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <Route exact path="/search/:id" component={MovieDetail}/>

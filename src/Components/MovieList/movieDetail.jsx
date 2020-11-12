@@ -1,8 +1,11 @@
 import React,{useState,useEffect} from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect,Link } from "react-router-dom";
 import {read_cookie,delete_cookie,bake_cookie} from 'sfcookies'
 import axios from 'axios'
+import { connect } from "react-redux";
+import { setMovie } from "../../redux/movieDetail/movieAciton";
 function MovieDetail(props) {
+
 
   const [login,setlogin]=useState(read_cookie('token').length>0?true:false)
   const [data,setData]=useState([])
@@ -28,12 +31,16 @@ useEffect(()=>{
     })
   }
 },[login])
-console.log(props.match.params.id)
+console.log(props)
  useEffect(()=>{
    if(data.length===0){
     axios.get('http://localhost:5000/api/detail/'+props.match.params.id).then(res=>{
         console.log(res.data)
         setData(res.data)
+        props.setMovie({
+          id:props.match.params.id,
+          data:res.data
+        })
     }).catch(err=>{
       console.log(err.message)
     })
@@ -47,9 +54,10 @@ console.log(props.match.params.id)
             <div className="container">
                   
                     <div className="navbar-header">
-                        <a href="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </a>
+                        <Link to="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </Link>
                     </div>
-                    <div><button className="btn btn-danger">Logout</button></div>
+                    <div><Link to={"/edit/"+props.match.params.id} >Edit Movie</Link></div>
+                    <div><button className="btn btn-danger" onClick={logout}>Logout</button></div>
             </div>
             </nav>
      </header>
@@ -64,7 +72,7 @@ console.log(props.match.params.id)
           <div className="col-lg-8 col-sm-6">
                 <div className="movie_data">
                     <h3> {data["Title"]}</h3>
-                   <p> <strong> Title: </strong>{data["Runtime"]} </p>
+                   <p> <strong> Duration: </strong>{data["Runtime"]} </p>
                    <p> <strong> Genre: </strong>{data["Genre"]} </p>
                    <p> <strong> IMDB Rating: </strong>{data["imdbRating"]}</p>
                    <p> <strong> IMDB Votes: </strong>{data["imdbVotes"]}</p>
@@ -79,4 +87,15 @@ console.log(props.match.params.id)
     </div>
   );
 }
-export default MovieDetail;
+const mapStateToProps = (state) => {
+  return {
+    id:state.movie.id,
+    data:state.movie.data
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    setMovie:(data)=>{dispatch(setMovie(data))}
+  };
+};
+export default connect(mapStateToProps, mapDispatch)(MovieDetail)

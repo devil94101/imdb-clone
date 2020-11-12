@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect ,Link} from "react-router-dom";
 import { setSearch } from "../../redux/list/listAction";
 import {read_cookie,delete_cookie,bake_cookie} from 'sfcookies'
 import axios from 'axios'
@@ -51,7 +51,7 @@ console.log(props)
             <div className="container">
                   
                     <div className="navbar-header">
-                        <a href="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </a>
+                        <Link to="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </Link>
                         
                     </div>
                     <div><button className="btn btn-danger">Logout</button></div>
@@ -72,18 +72,18 @@ console.log(props)
     </div>
 </div>
 <div className="row flex">
-      {props.data.map((ele,i)=>{
+      {props.data&&(props.data.map((ele,i)=>{
            return(<div key={i} className="col-lg-4 col-sm-6">
            <div className="thumbnail img-responsive">
-               <a href={"/search/"+ele.imdbID}> <img src={ele.Poster} className="searched_images" alt={ele.Title}/>
+               <Link to={"/search/"+ele.imdbID}> <img src={ele.Poster} className="searched_images" alt={ele.Title}/>
                <div className="caption" align="center">
                    <p>{ele.Title}</p>
                </div>
-               </a>
+               </Link>
            </div>
            </div>)
       
-      })}
+      }))}
       </div>
        </main>
     </div>
