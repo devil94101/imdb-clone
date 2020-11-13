@@ -32,7 +32,7 @@ function Movie(props) {
     plot:props.data.Plot,
     poster:props.data.Poster
   };
-  const [actors,setActors]=useState([])
+  const [actors,setActors]=useState(props.actors.split(','))
   const [state,setState]=useReducer(reducer,iniState)
   const [director,setDirector]=useState(props.data.Director)
   const submit=()=>{

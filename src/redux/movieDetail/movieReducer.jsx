@@ -1,7 +1,7 @@
 const ini = {
   id:"",
   detail:[],
-  actors:[]
+  actors:""
 };
 export const movieReducer = (state = ini, action) => {
   switch (action.type) {
