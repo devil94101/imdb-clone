@@ -4,6 +4,7 @@ import { read_cookie, delete_cookie, bake_cookie } from "sfcookies";
 import axios from "axios";
 import MovieForm from "../forms/Movie";
 import ActorForm from "../forms/Actor";
+import DirectorForm from '../forms/Director'
 function EditMovie(props) {
   const [login, setlogin] = useState(
     read_cookie("token").length > 0 ? true : false
@@ -68,11 +69,12 @@ function EditMovie(props) {
           <div>
             {" "}
             <p onClick={() => SetAdd("actor")}>+Add New Actor</p>
-            <p onClick={() => SetAdd("Director")}>+Add New Director</p>
+            <p onClick={() => SetAdd("director")}>+Add New Director</p>
           </div>
         )}
 
         {add == "actor" && <ActorForm SetAdd={SetAdd} />}
+        {add == "director" && <DirectorForm SetAdd={SetAdd} />}
       </main>
     </div>
   );

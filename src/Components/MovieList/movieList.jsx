@@ -84,6 +84,7 @@ console.log(props)
            </div>)
       
       }))}
+      {props.data===undefined&&(<h2>No data found</h2>)}
       </div>
        </main>
     </div>

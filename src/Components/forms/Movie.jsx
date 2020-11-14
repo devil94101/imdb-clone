@@ -8,8 +8,8 @@ import { connect } from "react-redux";
 import { setMovie } from "../../redux/movieDetail/movieAciton";
 import { setActors } from "../../redux/movieDetail/movieAciton";
 import DatePicker from "react-date-picker";
-
-function reducer(state, { field, value }) {
+import {setDirectors} from '../../redux/movieDetail/movieAciton'
+ function reducer(state, { field, value }) {
   return {
     ...state,
     [field]: value
@@ -24,11 +24,12 @@ function Movie(props) {
   const [actors, setActors] = useState(props.data.Actors.split(","));
   const [state, setState] = useReducer(reducer, iniState);
   const [director, setDirector] = useState(props.data.Director.split(",")[0]);
-  const [allActors, setAllActors] = useState([]);
-  const [allDirectors, setAllDirectors] = useState(
-    props.data.Director.split(",")
-  );
-  const [load, setLoad] = useState(false);
+  const [allActors, setAllActors] = useState([...props.actors,...props.data.Actors.split(",")]);
+  const [allDirectors, setAllDirectors] = useState([
+    ...props.data.Director.split(","),
+    ...props.directors
+  ]);
+  const [load, setLoad] = useState(true);
   const [date, setDate] = useState(new Date());
   const submit = () => {
     axios
@@ -64,11 +65,29 @@ function Movie(props) {
       submit();
     }
   };
-  // useEffect(()=>{
-  //   if(props.actors.length===0){
-
-  //   }
-  // },[load])
+  useEffect(()=>{
+    if(load&&props.actors.length===0&&props.directors.length===0){
+      axios.get('http://localhost:5000/movie/actors').then(res=>{
+      
+        setAllActors([...allActors,...res.data.actors])
+        setAllDirectors([...allDirectors,...res.data.directors])
+        props.setActors({
+          actors:res.data.actors
+        })
+        props.setDirectors({
+          directors:res.data.directors
+        })
+        setLoad(false)
+      }).catch(err=>{
+        console.log(err)
+        alert("network error")
+      })
+    }
+    else{
+      setLoad(false)
+    }
+  },[load])
+  console.log(props)
   if (load) {
     return <h2>Loading Data ...</h2>;
   } else {
@@ -176,7 +195,8 @@ const mapStateToProps = (state) => {
   return {
     id: state.movie.id,
     data: state.movie.detail,
-    actors: state.movie.actors
+    actors: state.movie.actors,
+    directors:state.movie.directors
   };
 };
 const mapDispatch = (dispatch) => {
@@ -186,6 +206,9 @@ const mapDispatch = (dispatch) => {
     },
     setActors: (data) => {
       dispatch(setActors(data));
+    },
+    setDirectors:(data)=>{
+      dispatch(setDirectors(data))
     }
   };
 };

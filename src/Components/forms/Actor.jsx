@@ -22,8 +22,23 @@ function EditMovie(props) {
   };
   const [state, setState] = useReducer(reducer, iniState);
   const [date, setDate] = useState(new Date());
-  console.log(state);
-  const submit = () => {};
+  const submit = () => {
+    axios.post('http://localhost:5000/movie/addActor',{
+      name:state.name,
+      gender:state.gender,
+      bio:state.bio,
+      dob:date
+      
+    }).then(res=>{
+      console.log(res.data.name)
+      alert("actor added")
+      props.setActors({
+        actors:[res.data.name]
+      })
+    }).catch(err=>{
+      console.log(err.message)
+    }    )
+  };
   const validate = () => {
     if (state.name === "") {
       alert("name should not be empty");
@@ -35,9 +50,9 @@ function EditMovie(props) {
   };
   return (
     <div className="col-md-4">
-      <p onClick={() => props.SetAdd("")}>+Add New Director</p>
+      <p onClick={() => props.SetAdd("director")}>+Click To Add New Director</p>
       <div className="form-group">
-        <label>Full Name</label>
+        <label>Full Actor Name</label>
         <input
           type="text"
           name="name"

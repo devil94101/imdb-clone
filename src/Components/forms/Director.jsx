@@ -1,71 +1,146 @@
-import React,{useState,useEffect} from "react";
-import { Link } from "react-router-dom";
-import axios from 'axios'
-import TextField from '@material-ui/core/TextField';
-import Chip from '@material-ui/core/Chip';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { useState, useReducer } from "react";
+
+import axios from "axios";
 import { connect } from "react-redux";
-import { setMovie } from "../../redux/movieDetail/movieAciton";
-import DatePicker from 'react-date-picker'
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 }
-]
+import { setDirectors } from "../../redux/movieDetail/movieAciton";
+import DatePicker from "react-date-picker";
+
+function reducer(state, { field, value }) {
+  return {
+    ...state,
+    [field]: value
+  };
+}
 function EditMovie(props) {
- 
+  const iniState = {
+    name: "",
+    gender: "male",
+    bio: ""
+  };
+  const handleInput = (e) => {
+    setState({ field: e.target.name, value: e.target.value });
+  };
+  const [state, setState] = useReducer(reducer, iniState);
+  const [date, setDate] = useState(new Date());
+  const submit = () => {
+    axios.post('http://localhost:5000/movie/addDirector',{
+      name:state.name,
+      gender:state.gender,
+      bio:state.bio,
+      dob:date
+    }).then(res=>{
+      console.log(res.data.name)
+      alert("director added")
+      props.setDirectors({
+        directors:[res.data.name]
+      })
+    }).catch(err=>{
+      console.log(err.message)
+    }    )
+  };
+  const validate = () => {
+    if (state.name === "") {
+      alert("name should not be empty");
+    } else if (state.bio === "") {
+      alert("bio should not be empty");
+    } else {
+      submit();
+    }
+  };
   return (
-        <div className="col-md-4">
-            <div className="form-group">
-          <label >Name</label>
-          <input type="text" className="form-control" placeholder="Actor Name"/>
-          
+    <div className="col-md-4">
+      <p onClick={() => props.SetAdd("actor")}>+Click To Add New Actor</p>
+      <div className="form-group">
+        <label>Full Director Name</label>
+        <input
+          type="text"
+          name="name"
+          onChange={handleInput}
+          className="form-control"
+          value={state.name}
+          placeholder="Director Name"
+        />
+      </div>
+      <div className="form-group">
+        <div className="form-check form-check-inline">
+          <input
+            style={{
+              transform: "scale(1.5)"
+            }}
+            type="radio"
+            value="male"
+            name="gender"
+            onChange={handleInput}
+            checked={state.gender === "male"}
+          />
+          <label
+            className="form-check-label"
+            style={{
+              fontSize: "20px",
+              marginLeft: "5px"
+            }}
+          >
+            Male
+          </label>
+        </div>
+        <div className="form-check form-check-inline">
+          <input
+            style={{
+              transform: "scale(1.5)"
+            }}
+            type="radio"
+            value="female"
+            onChange={handleInput}
+            checked={state.gender === "female"}
+            name="gender"
+          />
+          <label
+            className="form-check-label"
+            style={{
+              fontSize: "20px",
+              marginLeft: "5px"
+            }}
+          >
+            Female
+          </label>
+        </div>
+      </div>
+      <div className="form-group">
+        <label>DOB</label>
+        <div>
+          {" "}
+          <DatePicker onChange={(value) => setDate(value)} value={date} />
         </div>
         <div className="form-group">
-          <div  className="form-check form-check-inline" >
-              
-              <input style={{
-                  transform:'scale(1.5)'
-              }} type="radio" value="male" name="gender" /> 
-          <label className="form-check-label" style={{
-              fontSize:"20px",
-              marginLeft:"5px"
-          }}>Male</label>
-          </div>
-          <div className="form-check form-check-inline">
-              <input style={{
-                  transform:'scale(1.5)'
-              }} type="radio" value="female" name="gender" />
-              <label className="form-check-label" style={{
-              fontSize:"20px",
-              marginLeft:"5px"
-          }} >Female</label></div>
-          </div>
-          <div className="form-group">
-          <label >DOB</label>
-          <div> <DatePicker
-            // onChange={(value)=>this.setState({date:value})}
-            // value={this.state.date}
-        /></div>
+          <label>Bio</label>
+          <textarea
+            type="text"
+            name="bio"
+            value={state.bio}
+            onChange={handleInput}
+            className="form-control"
+            placeholder="Director Bio"
+          />
+        </div>
+        <div className="form-group">
+          <button className="btn btn-primary " onClick={validate}>
+            Submit{" "}
+          </button>
+        </div>
+      </div>
     </div>
-            </div>
   );
 }
 const mapStateToProps = (state) => {
   return {
-    id:state.movie.id,
-    data:state.movie.data
+    directors: state.movie.directors
   };
 };
 const mapDispatch = (dispatch) => {
   return {
-    setMovie:(data)=>{dispatch(setMovie(data))}
+    setDirectors: (data) => {
+      dispatch(setDirectors(data));
+    }
   };
 };
-export default connect(mapStateToProps, mapDispatch)(EditMovie)
+export default connect(mapStateToProps, mapDispatch)(EditMovie);

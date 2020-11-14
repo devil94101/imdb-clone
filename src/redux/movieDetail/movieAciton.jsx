@@ -9,3 +9,9 @@ export const setActors=(res)=>{
   payload:res
 }
 }
+export const setDirectors=(res)=>{
+  return{
+    type:"setDirectors",
+    payload:res
+  }
+}
