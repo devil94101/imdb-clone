@@ -5,7 +5,6 @@ import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { connect } from "react-redux";
-import { setMovie } from "../../redux/movieDetail/movieAciton";
 import { setActors } from "../../redux/movieDetail/movieAciton";
 import DatePicker from "react-date-picker";
 import {setDirectors} from '../../redux/movieDetail/movieAciton'
@@ -201,9 +200,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatch = (dispatch) => {
   return {
-    setMovie: (data) => {
-      dispatch(setMovie(data));
-    },
     setActors: (data) => {
       dispatch(setActors(data));
     },
