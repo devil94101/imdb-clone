@@ -30,17 +30,17 @@ useEffect(()=>{
     })
   }
 },[login])
-console.log(props)
+// console.log(props)
  const submit=(e)=>{
     e.preventDefault()
   axios.get('http://localhost:5000/movie/search/'+search).then(res=>{
     console.log(res.data)
     props.setSearch({
       search,
-      data:res.data.Search
+      data:res.data
     })
   }).catch(err=>{
-
+    
     console.log(err.message)
   })
   }
@@ -93,7 +93,7 @@ console.log(props)
   );
 }
 const mapStateToProps = (state) => {
-  console.log(state)
+ 
   return {
     search:state.list.search,
     data:state.list.data

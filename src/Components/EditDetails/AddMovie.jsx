@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { read_cookie, delete_cookie, bake_cookie } from "sfcookies";
 import axios from "axios";
-import MovieForm from "../forms/Movie";
+import MovieForm from "../forms/AddMovieForm";
 import ActorForm from "../forms/Actor";
+import DirectorForm from '../forms/Director'
 function AddMovie(props) {
   const [login, setlogin] = useState(
     read_cookie("token").length > 0 ? true : false
@@ -63,11 +64,16 @@ function AddMovie(props) {
         className="d-flex justify-content-around"
       >
         <MovieForm />
-        <div>
-          <p onClick={() => SetAdd("actor")}>+Add New Actor</p>
-          <p onClick={() => SetAdd("Director")}>+Add New Director</p>
-          {add == "actor" && <ActorForm />}
-        </div>
+        {add === "" && (
+          <div>
+            {" "}
+            <p onClick={() => SetAdd("actor")}>+Add New Actor</p>
+            <p onClick={() => SetAdd("director")}>+Add New Director</p>
+          </div>
+        )}
+
+        {add == "actor" && <ActorForm SetAdd={SetAdd} />}
+        {add == "director" && <DirectorForm SetAdd={SetAdd} />}
       </main>
     </div>
   );

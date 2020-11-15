@@ -42,6 +42,7 @@ function Movie(props) {
       })
       .then((res) => {
         console.log(res.data);
+        alert("edited movie added to db ")
       })
       .catch((err) => {
         console.log(err.message);
@@ -84,9 +85,18 @@ function Movie(props) {
     }
     else{
       setLoad(false)
+      setAllActors(props.actors)
     }
   },[load])
-  console.log(props)
+  useEffect(()=>{
+    setAllActors(props.actors)
+    console.log(props.actors)
+  },[props.actors])
+  // console.log(props)
+  useEffect(()=>{
+    setAllDirectors(props.directors)
+    // console.log(props.actors)
+  },[props.directors])
   if (load) {
     return <h2>Loading Data ...</h2>;
   } else {
