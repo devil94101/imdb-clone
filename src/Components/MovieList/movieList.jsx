@@ -75,7 +75,7 @@ useEffect(()=>{
 </div>
 <div className="row flex">
       {props.data&&(props.data.map((ele,i)=>{
-           return(<div key={i} className="col-lg-4 col-sm-6">
+           return(<div key={ele.imdbId} className="col-lg-4 col-sm-6">
            <div className="thumbnail img-responsive">
                <Link to={"/search/"+ele.imdbID}> <img src={ele.Poster} className="searched_images" alt={ele.Title}/>
                <div className="caption" align="center">

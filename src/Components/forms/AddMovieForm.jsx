@@ -186,7 +186,7 @@ function Movie(props) {
               type="text"
               name="poster"
               value={state.poster}
-              onChange={setState}
+              onChange={handleInput}
               placeholder="image url"
             />
           </div>
