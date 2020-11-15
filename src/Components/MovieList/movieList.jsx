@@ -40,6 +40,7 @@ console.log(props)
       data:res.data.Search
     })
   }).catch(err=>{
+
     console.log(err.message)
   })
   }
@@ -54,7 +55,7 @@ console.log(props)
                         <Link to="/" className="navbar-brand"><i className="fa fa-home" aria-hidden="true"></i> Movie Search Application </Link>
                         
                     </div>
-                    <div><Link to="/addMovie">Add Movie</Link></div>
+                    <div><Link to="/add">Add Movie</Link></div>
                     <div><button className="btn btn-danger">Logout</button></div>
             </div>
             </nav>

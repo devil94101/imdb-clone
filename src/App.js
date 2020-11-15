@@ -9,7 +9,7 @@ import MovieList from './Components/MovieList/movieList'
 import MovieDetail from './Components/MovieList/movieDetail'
 import EditMovie from './Components/EditDetails/EditMovie'
 import AddMovie from './Components/EditDetails/AddMovie'
-import AddMovieForm from './Components/forms/AddMovieForm'
+
 import "./App.css";
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <Route exact path="/search/:id" component={MovieDetail}/>
-            <Route exact path="/addMovie" component={AddMovieForm} />
+         
           </Switch>
         </div>
       </BrowserRouter>
